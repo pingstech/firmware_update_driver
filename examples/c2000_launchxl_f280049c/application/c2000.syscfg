@@ -1,0 +1,58 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --device "F28004x" --part "F28004x_100PZ" --package "F28004x_100PZ" --context "system" --product "C2000WARE@26.01.00.00"
+ * @v2CliArgs --device "TMS320F280049C" --package "100PZ" --context "system" --product "C2000WARE@26.01.00.00"
+ * @versions {"tool":"1.27.0+4565"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const gpio  = scripting.addModule("/driverlib/gpio.js", {}, false);
+const gpio1 = gpio.addInstance();
+const gpio2 = gpio.addInstance();
+const sci   = scripting.addModule("/driverlib/sci.js", {}, false);
+const sci1  = sci.addInstance();
+const sci2  = sci.addInstance();
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+gpio1.$name           = "LED4";
+gpio1.direction       = "GPIO_DIR_MODE_OUT";
+gpio1.gpioPin.$assign = "GPIO23_VSW";
+
+gpio2.$name           = "LED5";
+gpio2.direction       = "GPIO_DIR_MODE_OUT";
+gpio2.gpioPin.$assign = "GPIO34";
+
+sci1.$name                      = "FW_SCI";
+sci1.enabledFIFOInterrupts      = ["SCI_INT_RXFF","SCI_INT_TXFF"];
+sci1.enabledErrorInterrupts     = ["SCI_INT_FE","SCI_INT_OE","SCI_INT_PE","SCI_INT_RXERR"];
+sci1.selectRegisteredInterrupts = ["registerRxInt"];
+sci1.txFifo                     = "SCI_FIFO_TX1";
+sci1.rxFifo                     = "SCI_FIFO_RX1";
+sci1.sci.$assignAllowConflicts  = "SCIB";
+sci1.sci.sci_rxPin.$assign      = "GPIO13";
+sci1.sci.sci_txPin.$assign      = "GPIO40";
+sci1.rxQual.$name               = "myGPIOQUAL0";
+sci1.txQual.$name               = "myGPIOQUAL1";
+
+sci2.$name                      = "FC41D_SCI";
+sci2.enabledErrorInterrupts     = ["SCI_INT_FE","SCI_INT_OE","SCI_INT_PE","SCI_INT_RXERR"];
+sci2.enabledFIFOInterrupts      = ["SCI_INT_RXFF","SCI_INT_TXFF"];
+sci2.selectRegisteredInterrupts = ["registerRxInt"];
+sci2.rxFifo                     = "SCI_FIFO_RX1";
+sci2.txFifo                     = "SCI_FIFO_TX1";
+sci2.sci.sci_rxPin.$assign      = "GPIO28";
+sci2.sci.sci_txPin.$assign      = "GPIO29";
+sci2.rxQual.$name               = "myGPIOQUAL2";
+sci2.txQual.$name               = "myGPIOQUAL3";
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+sci2.sci.$suggestSolution = "SCIA";

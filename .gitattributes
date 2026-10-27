@@ -1,0 +1,5 @@
+# Keep shell scripts with LF line endings (they are run with bash).
+*.sh text eol=lf
+# Windows batch / PowerShell helpers keep CRLF.
+*.bat text eol=crlf
+*.ps1 text eol=crlf

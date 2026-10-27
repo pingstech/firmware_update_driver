@@ -1,0 +1,12 @@
+fw_update_application.out
+--binary
+--image
+--memwidth=16
+--romwidth=16
+--fill=0xFFFF
+-o app_test.bin
+
+ROMS
+{
+    APPIMG: origin = 0x106000, length = 0x20000
+}

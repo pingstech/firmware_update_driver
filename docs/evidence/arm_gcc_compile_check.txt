@@ -1,0 +1,31 @@
+# ARM GCC compile-only check (tests/target_builds/arm_gcc_compile_check.sh). Full output.
+OK   fwu_activate
+OK   fwu_boot
+OK   fwu_counters
+OK   fwu_crypto
+OK   fwu_crypto_sw
+OK   fwu_sha256
+OK   fwu_flash
+OK   fwu_journal
+OK   fwu_journal_ab
+OK   fwu_manifest
+OK   fwu_verify
+OK   fwu_flash_stm32g0
+OK   boot_app
+warnings: 0
+arm-none-eabi-gcc.exe (GNU Tools for STM32 13.3.rel1.20250523-0900) 13.3.1 20240614
+   text	   data	    bss	    dec	    hex	filename
+    572	      0	   1350	   1922	    782	<tmp>/boot_app.o
+   1680	      0	      0	   1680	    690	<tmp>/fwu_activate.o
+   1312	      0	      0	   1312	    520	<tmp>/fwu_boot.o
+    328	      0	      0	    328	    148	<tmp>/fwu_counters.o
+    324	      0	      0	    324	    144	<tmp>/fwu_crypto.o
+    134	      0	      0	    134	     86	<tmp>/fwu_crypto_sw.o
+    320	      0	      0	    320	    140	<tmp>/fwu_flash.o
+    672	      0	      0	    672	    2a0	<tmp>/fwu_flash_stm32g0.o
+    620	      0	      0	    620	    26c	<tmp>/fwu_journal.o
+    336	      0	      0	    336	    150	<tmp>/fwu_journal_ab.o
+    196	      0	      0	    196	     c4	<tmp>/fwu_manifest.o
+    902	      0	      0	    902	    386	<tmp>/fwu_sha256.o
+    652	      0	      0	    652	    28c	<tmp>/fwu_verify.o
+   8048	      0	   1350	   9398	   24b6	(TOTALS)

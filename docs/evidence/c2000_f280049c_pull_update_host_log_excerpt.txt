@@ -1,0 +1,41 @@
+Evidence: TI LAUNCHXL-F280049C, "device pulls image over HTTP" update (pull mode, control frames over BLE via an FC41D module).
+Source: excerpt of the host-tool log provided by the maintainer (the host tool is not part of this repository). Lines are copied verbatim,
+except for these redactions: the BLE address -> <ble-address>, private LAN addresses -> <host-ip> / <device-ip>. The tool's messages are in Turkish
+(frame names are English); the first column is the host tool's log line number, the second the time of day (no date is recorded in the log).
+Omitted: the polling lines (PULL_QUERY / PULL_STATUS pairs) between the shown parts, and pre-check lines that contain local file paths.
+Image: 67936 bytes, HTTP ranges of 4096 bytes. See docs/TEST_RESULTS.md for how this record is classified and what it does not prove.
+
+  208  13:16:50.567  EVENT --   +3594 ms  ble    Bağlantı isteniyor: BLE
+  210  13:16:52.149  EVENT --   +1582 ms  ble    BLE bağlandı: <ble-address>, MTU 512
+  214  13:16:53.122  EVENT --    +972 ms  ble    FC41D veri yolu hazır (hex metin): yazma parçası 126 bayt (252 karakter), yazmalar arası 80 ms (MTU 512 raporlandı, kullanılmıyor)
+  215  13:16:53.123  EVENT --      +1 ms  ble    Bağlantı durumu: Bağlı (<ble-address>)
+  218  13:17:04.043  EVENT --   +5603 ms  http   HTTP sunucu taklidi başladı: <host-ip>:8080  hedef /firmware.bin  (67936 B sunuluyor)
+  219  13:17:04.044  EVENT --      +1 ms  http   Sunulan içerik: güncelleme imajı, 67936 B; hata enjeksiyonu: yok
+  221  13:17:12.055  EVENT --   +4946 ms  ble    Güncelleme başlıyor: BLE, hedef TI F2800157-Q1 (C2000), imaj 67936 B, DEV manifest (imzasız, uygulama üretti), ürün 2001, sürüm 2, ÇEKME modu, sunucu <host-ip>:8080, hedef /firmware.bin
+  222  13:17:12.055  EVENT --      +0 ms  ble    Aşama: Hazırlık
+  223  13:17:12.072  FRAME TX     +17 ms  ble    HELLO seq=1  HELLO yuk=01  A5 01 01 01 00 01 01 A6 FD 5A
+  226  13:17:15.188  FRAME RX      +1 ms  ble    INFO seq=1  INFO proto=1 bayrak=0x00 (yetkilendirme=0 imza=0) urun=2001 calisan_surum=1 parca=256 durum=BOSTA
+  230  13:17:15.427  FRAME RX      +0 ms  ble    DOWNLOAD_ACCEPTED seq=2  DOWNLOAD_ACCEPTED parca=256 mod=0 zaman_asimi=30s sonraki_ofset=0
+  231  13:17:15.427  EVENT --      +0 ms  ble    Aşama: Sunucudan çekme
+  232  13:17:15.427  FRAME TX      +0 ms  ble    PULL_START seq=3  PULL_START sunucu=<host-ip>:8080 hedef=/firmware.bin  A5 01 15 03 00 14 AC 10 C8 3B 1F 90 0D 2F 66 69 72 6D 77 61 72 65 2E 62 69 6E EF 91 5A
+  235  13:17:15.667  FRAME RX      +0 ms  ble    PULL_STARTED seq=3  PULL_STARTED durum=İSTEK GÖNDERİLİYOR flash_ofset=0
+  245  13:17:20.372  EVENT --   +1460 ms  http   HTTP bağlantısı açıldı: <device-ip>:62646 (#2)
+  247  13:17:20.463  EVENT --     +31 ms  http   HTTP <device-ip>:62646  GET /firmware.bin  Range: bytes=0-4095  →  206  (4331 B)
+  [... PULL_QUERY / PULL_STATUS polling and further GET lines omitted; several ranges were requested twice (an 8 s device-side response timeout, then a re-request) ...]
+  433  13:18:26.093  EVENT --    +287 ms  http   HTTP <device-ip>:62646  GET /firmware.bin  Range: bytes=61440-65535  →  206  (4336 B)
+  434  13:18:26.814  EVENT --    +721 ms  http   HTTP <device-ip>:62646  GET /firmware.bin  Range: bytes=65536-67935  →  206  (2640 B)
+  437  13:18:27.427  RAW   RX     +30 ms  ble      A5 01 96 2F 00 08 03 00 01 09 60 00 00 CE A6 34 5A
+  438  13:18:27.428  FRAME RX      +1 ms  ble    PULL_STATUS seq=47  PULL_STATUS durum=TAMAM flash_ofset=67936 http=206
+  439  13:18:27.428  EVENT --      +0 ms  ble    Cihaz çekme durumu: TAMAM (flash'a yazılan 67936 / 67936 B)
+  440  13:18:27.428  EVENT --      +0 ms  ble    Aşama: Doğrulama
+  441  13:18:27.428  FRAME TX      +0 ms  ble    TRANSFER_EXIT seq=48  TRANSFER_EXIT yuk=00010960  A5 01 12 30 00 04 00 01 09 60 CE 11 5A
+  444  13:18:28.208  FRAME RX      +1 ms  ble    EXIT_PENDING seq=48  EXIT_PENDING
+  445  13:18:28.209  FRAME RX      +0 ms  ble    VERIFY_RESULT seq=48  VERIFY_RESULT kod=0 (GECERLI)
+  446  13:18:28.209  EVENT --      +0 ms  ble    Aşama: Aktivasyon
+  447  13:18:28.209  FRAME TX      +0 ms  ble    ACTIVATE seq=49  ACTIVATE yuk=00010960  A5 01 13 31 00 04 00 01 09 60 C2 C0 5A
+  450  13:18:28.387  FRAME RX      +0 ms  ble    ACTIVATE_OK seq=49  ACTIVATE_OK
+  451  13:18:28.388  EVENT --      +1 ms  ble    Aşama: Aktivasyon tamam
+  452  13:18:28.389  EVENT --      +1 ms  ble    Güncelleme tamamlandı: cihaz aktivasyonu onayladı (ACTIVATE_OK). Cihaz yeniden başlatma sonrası çalışan sürüm BU AKIŞTA doğrulanmaz.
+
+Note on the log: the host tool printed "hedef TI F2800157-Q1 (C2000)" in line 221 because that is the label of the target profile selected in the tool;
+the hardware used for this run was a LAUNCHXL-F280049C (see docs/TEST_RESULTS.md, evidence classification).
